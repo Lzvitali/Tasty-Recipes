@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TastyRecipes
+namespace TastyRecipes.pages
 {
 
 
@@ -39,7 +39,7 @@ namespace TastyRecipes
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::TastyRecipes.Menu Menu;
+        protected global::TastyRecipes.pages.Menu Menu;
 
         /// <summary>
         /// ContentPlaceHolder1 control.

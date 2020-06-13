@@ -1,6 +1,7 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MainTemplate.master.cs" Inherits="TastyRecipes.MainTemplate" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MainTemplate.master.cs" Inherits="TastyRecipes.pages.MainTemplate" %>
 
-<%@ Register Src="~/Menu.ascx" TagPrefix="uc1" TagName="Menu" %>
+<%@ Register Src="~/pages/Menu.ascx" TagPrefix="uc1" TagName="Menu" %>
+
 
 
 <!DOCTYPE html>
@@ -12,7 +13,7 @@
     <%--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>--%>
 
-    <link href="includes/bootstrap.css" rel="stylesheet" />
+    <link href="../includes/bootstrap.css" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -29,7 +30,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <uc1:Menu runat="server" id="Menu" />
+                <uc1:Menu runat="server" ID="Menu" />
             </nav>
            
 

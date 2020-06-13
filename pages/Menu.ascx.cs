@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace TastyRecipes
+namespace TastyRecipes.pages
 {
-    public partial class MainTemplate : System.Web.UI.MasterPage
+    public partial class Menu : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {

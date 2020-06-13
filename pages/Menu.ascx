@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Menu.ascx.cs" Inherits="TastyRecipes.Menu" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Menu.ascx.cs" Inherits="TastyRecipes.pages.Menu" %>
 
 <div class="collapse navbar-collapse" id="navbarColor01" style="position: relative">
     <asp:Panel ID="pnlNotLogedIn" runat="server" Visible="false">

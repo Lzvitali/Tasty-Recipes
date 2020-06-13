@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TastyRecipes
+namespace TastyRecipes.pages
 {
 
 
-    public partial class Login
+    public partial class Index
     {
     }
 }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TastyRecipes
+namespace TastyRecipes.pages
 {
 
 
