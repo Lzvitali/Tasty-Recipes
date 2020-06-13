@@ -243,8 +243,7 @@ button {
     }
 
 
-input,
-button,
+
 select,
 optgroup,
 textarea {
@@ -254,6 +253,7 @@ textarea {
     line-height: inherit;
 }
 
+input,
 button {
     font-family: cursive;
 }

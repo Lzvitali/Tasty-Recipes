@@ -11,7 +11,34 @@ namespace TastyRecipes.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            ShowLogin(true);
+        }
+
+        protected void register_click(object sender, EventArgs e)
+        {
+            ShowLogin(false);
+        }
+
+        protected void login_click(object sender, EventArgs e)
+        {
+            ShowLogin(true);
+        }
+
+        private void ShowLogin(bool show)
+        {
+            pnlLogin.Visible = show;
+            pnlRegistration.Visible = !show;
+        }
+
+        protected void submit_registration_click(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void loginLink_click(object sender, EventArgs e)
+        {
 
         }
+
     }
 }

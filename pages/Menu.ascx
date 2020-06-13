@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Menu.ascx.cs" Inherits="TastyRecipes.pages.Menu" %>
 
 <div class="collapse navbar-collapse" id="navbarColor01" style="position: relative">
-    <asp:Panel ID="pnlNotLogedIn" runat="server" Visible="false">
+    <asp:Panel ID="pnlNotLogedIn" runat="server">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item <%if (Page.Title == "About")
                 {%>active<%}%>">
@@ -15,7 +15,7 @@
 
     </asp:Panel>
 
-    <asp:Panel ID="pnlLogedIn" runat="server" >
+    <asp:Panel ID="pnlLogedIn" runat="server" Visible="false">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item <%if (Page.Title == "Home")
                 {%>active<%}%>">
@@ -32,6 +32,8 @@
         </ul>
     </asp:Panel>
 
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="position: absolute; right: 0">Login</button>
+    <asp:LinkButton runat="server" ID="loginBtn" CssClass="btn btn-secondary my-2 my-sm-0" Text="Login" OnClick="btnLogin_click"
+        CausesValidation="false" Style="position: absolute; right: 0; font-family: cursive;"></asp:LinkButton>
+    <%--<button class="btn btn-secondary my-2 my-sm-0" style="position: absolute; right: 0">Login</button>--%>
 
 </div>

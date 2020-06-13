@@ -13,5 +13,10 @@ namespace TastyRecipes.pages
         {
 
         }
+
+        protected void btnLogin_click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
