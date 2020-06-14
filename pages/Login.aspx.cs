@@ -21,7 +21,22 @@ namespace TastyRecipes.pages
 
         protected void login_click(object sender, EventArgs e)
         {
-            ShowLogin(true);
+            using (var db = new DBConnection.TastyRecipesEntities())
+            {
+                var user = db.tbUsers.Where(u => u.UserEmail == txtBoxMailLogin.Text && u.UserPassword == txtBoxPasswordLogin.Text).FirstOrDefault();
+                if(null == user)
+                {
+                    lblError.Text = "email or password is incorrect";
+                }
+                else
+                {
+                    Session["userName"] = user.UserName;
+                    Session["UserEmail"] = user.UserEmail;
+
+                    Response.Redirect("Index.aspx");
+                }
+
+            }
         }
 
         private void ShowLogin(bool show)
@@ -30,6 +45,10 @@ namespace TastyRecipes.pages
             pnlRegistration.Visible = !show;
         }
 
+
+
+        /* ------------------------ Registration ------------------------ */
+
         protected void submit_registration_click(object sender, EventArgs e)
         {
             
@@ -37,7 +56,7 @@ namespace TastyRecipes.pages
 
         protected void loginLink_click(object sender, EventArgs e)
         {
-
+            ShowLogin(true);
         }
 
     }

@@ -11,7 +11,15 @@ namespace TastyRecipes.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("Login.aspx");
+            if(null != Session["UserEmail"])
+            {
+                lbl1.Text = string.Format("<p>Welcome {0} !</p>", Session["UserName"]);
+            }
+            else  // TODO: change this
+            {
+                Response.Redirect("Login.aspx");
+            }
+            
         }
     }
 }
