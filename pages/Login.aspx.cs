@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using TastyRecipes.DBConnection;
 
 namespace TastyRecipes.pages
 {
@@ -12,6 +13,7 @@ namespace TastyRecipes.pages
         protected void Page_Load(object sender, EventArgs e)
         {
             ShowLogin(true);
+            Page.Title = "Login";
         }
 
         protected void register_click(object sender, EventArgs e)
@@ -26,14 +28,11 @@ namespace TastyRecipes.pages
                 var user = db.tbUsers.Where(u => u.UserEmail == txtBoxMailLogin.Text && u.UserPassword == txtBoxPasswordLogin.Text).FirstOrDefault();
                 if(null == user)
                 {
-                    lblError.Text = "email or password is incorrect";
+                    lblErrorLogin.Text = "email or password is incorrect";
                 }
                 else
                 {
-                    Session["userName"] = user.UserName;
-                    Session["UserEmail"] = user.UserEmail;
-
-                    Response.Redirect("Index.aspx");
+                    enterUserToSession(user.UserName, user.UserEmail);
                 }
 
             }
@@ -46,12 +45,42 @@ namespace TastyRecipes.pages
         }
 
 
+        private void enterUserToSession(string UserName, string UserEmail)
+        {
+            Session["userName"] = UserName;
+            Session["UserEmail"] = UserEmail;
+
+            Session["currentPage"] = "Home";
+            Server.Transfer("Index.aspx");
+
+            // Response.Redirect("Index.aspx");
+        }
+
+
 
         /* ------------------------ Registration ------------------------ */
 
         protected void submit_registration_click(object sender, EventArgs e)
         {
-            
+            using (var db = new DBConnection.TastyRecipesEntities())
+            {
+                var user = db.tbUsers.Where(u => u.UserEmail == txtBoxMailRegister.Text).FirstOrDefault();
+                if (null == user)
+                {
+                    //tbUser t = new
+                    db.tbUsers.Add(new tbUser { UserName = txtBoxUserNameRegister.Text, UserEmail = txtBoxMailRegister.Text, UserPassword = txtBoxPasswordRegister.Text });
+                    db.SaveChanges();
+
+                    enterUserToSession(txtBoxUserNameRegister.Text, txtBoxMailRegister.Text);
+                    
+                }
+                else
+                {
+                    lblErrorRegister.Text = "User with that email is already exist";
+                    ShowLogin(false);
+                }
+
+            }
         }
 
         protected void loginLink_click(object sender, EventArgs e)

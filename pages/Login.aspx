@@ -28,7 +28,7 @@
                 </div>
 
                 <div>
-                    <asp:Label runat="server" ID="lblError" ForeColor="Red"></asp:Label>
+                    <asp:Label runat="server" ID="lblErrorLogin" ForeColor="Red"></asp:Label>
                 </div>
             </div>
             <div class="modal-footer">
@@ -75,7 +75,7 @@
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtBoxPasswordRegister" ErrorMessage="Required field" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                 </div>
                 <div>
-                    <asp:Label runat="server" ID="Label1" ForeColor="Red"></asp:Label>
+                    <asp:Label runat="server" ID="lblErrorRegister" ForeColor="Red"></asp:Label>
                 </div>
             </div>
 

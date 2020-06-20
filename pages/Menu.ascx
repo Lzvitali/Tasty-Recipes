@@ -2,21 +2,19 @@
 
 <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto" runat="server">
-            <li class="nav-item <%if (Page.Title == "Home")
-                {%>active<%}%>" id="btnHome">
-                <a href="Home.aspx" class="nav-link">Home</a>
+            <li class="nav-item" id="btnHome" runat="server">
+                <asp:LinkButton class="nav-link" OnClick="clickHome" runat="server" CausesValidation="false">Home</asp:LinkButton>
             </li>
-            <li class="nav-item <%if (Page.Title == "About")
-                {%>active<%}%>">
-                <a href="#" class="nav-link">About</a>
+            <li class="nav-item" id="btnAbout" runat="server">
+                <asp:LinkButton class="nav-link" OnClick="clickAbout" runat="server" CausesValidation="false">About</asp:LinkButton>
             </li>
-            <li class="nav-item <%if (Page.Title == "Contact")
-                {%>active<%}%>">
-                <a href="#" class="nav-link">Contact</a>
+            <li class="nav-item" id="btnContact" runat="server">
+                <asp:LinkButton class="nav-link" OnClick="clickContact" runat="server" CausesValidation="false">Contact</asp:LinkButton>
             </li>
         </ul>
 
-    <asp:LinkButton runat="server" ID="loginBtn" CssClass="btn btn-secondary my-2 my-sm-0" Text="Login" OnClick="btnLogin_click"
-        CausesValidation="false" Style="font-family: cursive;"></asp:LinkButton>
+    <asp:Label ID="lableUserGreeting" runat="server" Style="font-family: cursive; font-size: 0.9rem; margin-right: 15px"></asp:Label>
+    <asp:LinkButton runat="server" ID="btnLogin" CssClass="btn btn-secondary my-2 my-sm-0" Text="Login" OnClick="btnLogin_click"
+        CausesValidation="false" Style="font-family: cursive;" ></asp:LinkButton>
 
 </div>
