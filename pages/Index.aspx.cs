@@ -13,8 +13,29 @@ namespace TastyRecipes.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            
+            if (Session["currentPage"] != null)
+            {
+                if ((string)Session["currentPage"] == "Home")
+                {
+                    setVisibility(false, false, true);
+                }
+                if ((string)Session["currentPage"] == "About")
+                {
+                    setVisibility(true, false, false);
+                }
+                if ((string)Session["currentPage"] == "Contact")
+                {
+                    setVisibility(false, true, false);
+                }
+            }
+
+        }
+
+        private void setVisibility(bool isAbout, bool isContact, bool isHome)
+        {
+            divAbout.Visible = isAbout;
+            divContact.Visible = isContact;
+            divHome.Visible = isHome;
         }
     }
 }

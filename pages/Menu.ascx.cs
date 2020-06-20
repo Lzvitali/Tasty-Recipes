@@ -18,14 +18,6 @@ namespace TastyRecipes.pages
                     btnHome.Attributes.Add("class", "nav-item active");
                     Page.Title = "Tasty Recipes";
 
-                    // change the 'login' btn to 'logout' (if it after login)
-                    if (null != Session["UserEmail"])
-                    {
-                        btnLogin.Text = "Logout";
-
-                        lableUserGreeting.Text = "Hello " + Session["UserName"];
-                    }
-
                 }
                 if ((string)Session["currentPage"] == "About")
                 {
@@ -45,6 +37,15 @@ namespace TastyRecipes.pages
                 Page.Title = "Home";
                
             }
+
+            // change the 'login' btn to 'logout' (if it after login)
+            if (null != Session["UserEmail"])
+            {
+                btnLogin.Text = "Logout";
+
+                lableUserGreeting.Text = "Hello " + Session["UserName"];
+            }
+
         }
 
         protected void btnLogin_click(object sender, EventArgs e)
