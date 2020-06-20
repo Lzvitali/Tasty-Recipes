@@ -11,9 +11,9 @@ namespace TastyRecipes.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["currentPage"] != null)
+            if (Session["currentPage"] != null)
             {
-                if((string)Session["currentPage"] == "Home")
+                if ((string)Session["currentPage"] == "Home")
                 {
                     btnHome.Attributes.Add("class", "nav-item active");
                     Page.Title = "Tasty Recipes";
@@ -35,13 +35,13 @@ namespace TastyRecipes.pages
                 Session["currentPage"] = "Home";
                 btnHome.Attributes.Add("class", "nav-item active");
                 Page.Title = "Home";
-               
+
             }
 
             // change the 'login' btn to 'logout' (if it after login)
             if (null != Session["UserEmail"])
             {
-                btnLogin.Text = "Logout";
+                btnLogin.Text = string.Format("<i id=\"iconLogin\" class=\"fa fa-sign-out \" runat=\"server\" aria-hidden=\"true\"></i> Logout");
 
                 lableUserGreeting.Text = "Hello " + Session["UserName"];
             }
@@ -54,7 +54,7 @@ namespace TastyRecipes.pages
             // because now he will be loged-out
             if (null != Session["UserEmail"])
             {
-                btnLogin.Text = "Login";
+                btnLogin.Text = string.Format("<i id=\"iconLogin\" class=\"fa fa-sign-in \" runat=\"server\" aria-hidden=\"true\"></i> Login");
                 Session["UserEmail"] = null;
 
                 lableUserGreeting.Text = "";
@@ -64,7 +64,7 @@ namespace TastyRecipes.pages
                 Session["currentPage"] = "Login";
                 Response.Redirect("Login.aspx");
             }
-            
+
         }
 
         protected void clickHome(object sender, EventArgs e)
