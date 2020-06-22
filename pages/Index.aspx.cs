@@ -40,7 +40,14 @@ namespace TastyRecipes.pages
 
         protected void btnSearch_click(object sender, EventArgs e)
         {
+            // references:
+            // how to get multiple values from selected - asp.net
+            // https://stackoverflow.com/questions/16510821/how-to-get-multiple-values-from-selected-asp-net
+            // https://www.google.com/search?safe=active&sxsrf=ALeKk01Ww9zKS36R7SRVcBFrpB8pXTfilA%3A1592837272427&ei=mMTwXqHAGc_2kwX10rHQBg&q=asp.net+get+selected+value+from+multiple+asp%3AListBox&oq=asp.net+get+selected+value+from+multiple+asp%3AListBox&gs_lcp=CgZwc3ktYWIQAzoHCCMQrgIQJ1DkuCRY7N8kYMLkJGgBcAB4AIABkgGIAd0CkgEDMS4ymAEAoAECoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwih7Lqe1ZXqAhVP-6QKHXVpDGoQ4dUDCAw&uact=5
 
+            // read the input of the time:
+            // String str = inputTime.Text;
+            
         }
     }
 }

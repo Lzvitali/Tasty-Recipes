@@ -1,6 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/pages/MainTemplate.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="TastyRecipes.pages.Index" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .inputTime {
+            background-color: rgb(250, 250, 250);
+            text-align: center;
+            width: 70px;
+            display: inline-block
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -54,12 +62,12 @@
                         <label class="font-weight-bold" style="font-size: 1rem">Meal type</label>
                     </div>
                     <div class="col-sm-2">
-                        <select class="selectpicker" multiple data-live-search="true" data-actions-box="true">
-                            <option>Breakfast</option>
-                            <option>Dinners</option>
-                            <option>Lunch</option>
-                            <option>Desserts</option>
-                        </select>
+                        <asp:ListBox ID="listType" CssClass="selectpicker" SelectionMode="Multiple" runat="server" data-live-search="true">
+                            <asp:ListItem Value="option1">Breakfast</asp:ListItem>
+                            <asp:ListItem Value="option2">Dinners</asp:ListItem>
+                            <asp:ListItem Value="option3">Lunch</asp:ListItem>
+                            <asp:ListItem Value="option4">Desserts</asp:ListItem>
+                        </asp:ListBox>
                     </div>
 
                 </div>
@@ -69,23 +77,23 @@
                         <label class="font-weight-bold" style="font-size: 1rem">Category</label>
                     </div>
                     <div class="col-sm-2">
-                        <select class="selectpicker" multiple data-live-search="true" data-actions-box="true">
-                            <option>Snacks</option>
-                            <option>Appetisers</option>
-                            <option>Soups</option>
-                            <option>Salads</option>
-                            <option>Sides</option>
-                            <option>Pizza</option>
-                            <option>Pies</option>
-                            <option>Burgers</option>
-                            <option>Pasta</option>
-                            <option>Chicken</option>
-                            <option>Seafood</option>
-                            <option>Meat</option>
-                            <option>Vegetarian</option>
-                            <option>Baking</option>
-                            <option>Desserts</option>
-                        </select>
+                        <asp:ListBox ID="listCategory" CssClass="selectpicker" SelectionMode="Multiple" runat="server" data-live-search="true">
+                            <asp:ListItem Value="option1">Snacks</asp:ListItem>
+                            <asp:ListItem Value="option2">Appetisers</asp:ListItem>
+                            <asp:ListItem Value="option3">Soups</asp:ListItem>
+                            <asp:ListItem Value="option4">Salads</asp:ListItem>
+                            <asp:ListItem Value="option5">Sides</asp:ListItem>
+                            <asp:ListItem Value="option6">Pizza</asp:ListItem>
+                            <asp:ListItem Value="option7">Pies</asp:ListItem>
+                            <asp:ListItem Value="option8">Burgers</asp:ListItem>
+                            <asp:ListItem Value="option9">Pasta</asp:ListItem>
+                            <asp:ListItem Value="option10">Chicken</asp:ListItem>
+                            <asp:ListItem Value="option11">Seafood</asp:ListItem>
+                            <asp:ListItem Value="option12">Meat</asp:ListItem>
+                            <asp:ListItem Value="option13">Vegetarian</asp:ListItem>
+                            <asp:ListItem Value="option14">Baking</asp:ListItem>
+                            <asp:ListItem Value="option15">Desserts</asp:ListItem>
+                        </asp:ListBox>
                     </div>
 
                 </div>
@@ -95,11 +103,11 @@
                         <label class="font-weight-bold" style="font-size: 1rem">Difficulty</label>
                     </div>
                     <div class="col-sm-2">
-                        <select class="selectpicker" multiple data-live-search="true" data-actions-box="true" style="font-weight: normal">
-                            <option>Easy</option>
-                            <option>Medium</option>
-                            <option>Hard</option>
-                        </select>
+                        <asp:ListBox ID="listDifficulty" CssClass="selectpicker" SelectionMode="Multiple" runat="server" data-live-search="true">
+                            <asp:ListItem Value="option1">Easy</asp:ListItem>
+                            <asp:ListItem Value="option2">Medium</asp:ListItem>
+                            <asp:ListItem Value="option3">Hard</asp:ListItem>
+                        </asp:ListBox>
                     </div>
                 </div>
 
@@ -110,15 +118,17 @@
                         <label>(For any time insert: 0)</label>
                     </div>
                     <div class="col-sm-2">
-                        <input class="form-control" style="background-color: rgb(250, 250, 250); text-align: center; width: 70px; display: inline-block" type="number" value="0" min="0" max="400" step="5" />
+                        <asp:TextBox ID="inputTime" runat="server" CssClass="form-control inputTime" type="number" value="0" min="0" max="400" step="5"></asp:TextBox>
                         <label style="margin-bottom: 0;">(minutes)</label>
+                        <asp:rangevalidator ID="RangevalidatorForTime" errormessage="Please enter value between 0-400." forecolor="Red" controltovalidate="inputTime"
+                            minimumvalue="0" maximumvalue="400" runat="server" Type="Integer" Display="Dynamic">
+                        </asp:rangevalidator>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4" style="text-align:center; margin-bottom: 10px">
+                    <div class="col-sm-4" style="text-align: center; margin-bottom: 10px">
                         <asp:LinkButton runat="server" ID="btnSearch" CssClass="btn btn-secondary my-2 my-sm-0" OnClick="btnSearch_click" Style="font-family: cursive;">
-                            <%-- <i id="iconLogin" class="fa fa-sign-in" runat="server" aria-hidden="true"></i>--%>
                             <i class="fa fa-search" aria-hidden="true"></i>
                          Search
                         </asp:LinkButton>

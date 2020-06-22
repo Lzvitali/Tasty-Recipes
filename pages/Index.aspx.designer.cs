@@ -42,6 +42,51 @@ namespace TastyRecipes.pages
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divHome;
 
         /// <summary>
+        /// listType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox listType;
+
+        /// <summary>
+        /// listCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox listCategory;
+
+        /// <summary>
+        /// listDifficulty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox listDifficulty;
+
+        /// <summary>
+        /// inputTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox inputTime;
+
+        /// <summary>
+        /// RangevalidatorForTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator RangevalidatorForTime;
+
+        /// <summary>
         /// btnSearch control.
         /// </summary>
         /// <remarks>
