@@ -126,12 +126,18 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" style="margin-bottom: 10px">
                     <div class="col-sm-4" style="text-align: center; margin-bottom: 10px">
                         <asp:LinkButton runat="server" ID="btnSearch" CssClass="btn btn-secondary my-2 my-sm-0" OnClick="btnSearch_click" Style="font-family: cursive;">
                             <i class="fa fa-search" aria-hidden="true"></i>
                          Search
                         </asp:LinkButton>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-2">
+                        <asp:LinkButton runat="server" ID="LinkBtnMyPosts" Text="Show my posts" OnClick="myPosts_click" CausesValidation="false" Style="font-size: 1rem"></asp:LinkButton>
                     </div>
                 </div>
 

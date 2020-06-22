@@ -49,5 +49,10 @@ namespace TastyRecipes.pages
             // String str = inputTime.Text;
             
         }
+
+        protected void myPosts_click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
