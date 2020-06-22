@@ -51,9 +51,9 @@ namespace TastyRecipes.pages
             Session["UserEmail"] = UserEmail;
 
             Session["currentPage"] = "Home";
-            Server.Transfer("Index.aspx");
+            //Server.Transfer("Index.aspx");
 
-            // Response.Redirect("Index.aspx");
+            Response.Redirect("Index.aspx");
         }
 
 
