@@ -20,7 +20,7 @@
     </ul>
 
     <asp:Label ID="lableUserGreeting" runat="server" Style="font-family: cursive; font-size: 0.9rem; margin-right: 15px"></asp:Label>
-    <asp:LinkButton runat="server" ID="btnLogin" CssClass="btn btn-secondary my-2 my-sm-0" OnClick="btnLogin_click"
+    <asp:LinkButton runat="server" ID="btnLogin" CssClass="btn btn-secondary my-2 my-sm-0 btnBold" OnClick="btnLogin_click"
         CausesValidation="false" Style="font-family: cursive;">
         <i id="iconLogin" class="fa fa-sign-in" runat="server" aria-hidden="true"></i>
         Login

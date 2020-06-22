@@ -37,5 +37,10 @@ namespace TastyRecipes.pages
             divContact.Visible = isContact;
             divHome.Visible = isHome;
         }
+
+        protected void btnSearch_click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

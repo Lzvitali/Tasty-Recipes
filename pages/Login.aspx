@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/pages/MainTemplate.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="TastyRecipes.pages.Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
 </asp:Content>
 
 
@@ -39,7 +40,7 @@
                         <%-- <button type="button" runat="server" id="register" onServerClick="register_Click">new user registration</button>--%>
                     </div>
                     <div style="float: right">
-                        <asp:Button runat="server" ID="btnLogin" Text="Submit" OnClick="login_click" CssClass="btn btn-primary" />
+                        <asp:Button runat="server" ID="btnLogin" Text="Submit" OnClick="login_click" CssClass="btn btn-primary btnBold " />
                     </div>
                     <div style="clear: both"></div>
                 </div>
