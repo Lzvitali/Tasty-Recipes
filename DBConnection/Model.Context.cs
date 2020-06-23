@@ -26,5 +26,6 @@ namespace TastyRecipes.DBConnection
         }
     
         public virtual DbSet<tbUser> tbUsers { get; set; }
+        public virtual DbSet<tbRecipe> tbRecipes { get; set; }
     }
 }

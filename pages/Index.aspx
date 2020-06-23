@@ -9,6 +9,48 @@
             display: inline-block
         }
     </style>
+
+    <script>
+
+        // Material Select Initialization
+        $(document).ready(function () {
+            $('select').selectpicker();
+        });
+
+
+        var app = angular.module('app', [])
+            .controller('recipesCtrl', function ($scope, $http) {
+
+                angular.element(document).ready(function () {
+                    $scope.getRecipes();
+                });
+
+                $scope.getRecipes = function () {
+                    $http.get("../DBConnection/webservice.asmx/GetRecipes", null)
+                        .then(function (d) {
+                            // success
+                            $scope.recipesData = $scope.getResponceXML(d)
+                            console.log($scope.recipesData);
+                        }, function (er) {
+                            // error
+                            console.log(er);
+                        });
+                }
+
+
+                // data from service xml -> json
+                $scope.getResponceXML = function (d) {
+                    var xmlDoc = $.parseXML(d.data);
+                    if (xmlDoc == null) { // json format
+                        return JSON.parse(d.data.d);
+                    } else { // xml format
+                        return JSON.parse(xmlDoc.documentElement.textContent);
+                    }
+                }
+
+            });
+
+    </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -47,7 +89,7 @@
     </div>
 
 
-    <div id="divHome" class="container" runat="server" style="margin-top: 20px;">
+    <div id="divHome" class="container" runat="server" style="margin-top: 20px;" ng-app="app" ng-controller="recipesCtrl">
         <div class="jumbotron" style="padding: 0.5rem 1rem; margin-bottom: 1rem;">
             <div style="cursor: pointer;" data-toggle="collapse" data-target="#divFilter">
                 <i class='fas fa-angle-double-down' runat="server" aria-hidden="true" style='font-size: 20px'></i>
@@ -67,6 +109,7 @@
                             <asp:ListItem Value="option2">Dinners</asp:ListItem>
                             <asp:ListItem Value="option3">Lunch</asp:ListItem>
                             <asp:ListItem Value="option4">Desserts</asp:ListItem>
+                            <asp:ListItem Value="option5">Suitable for all</asp:ListItem>
                         </asp:ListBox>
                     </div>
 
@@ -93,6 +136,7 @@
                             <asp:ListItem Value="option13">Vegetarian</asp:ListItem>
                             <asp:ListItem Value="option14">Baking</asp:ListItem>
                             <asp:ListItem Value="option15">Desserts</asp:ListItem>
+                            <asp:ListItem Value="option15">Others</asp:ListItem>
                         </asp:ListBox>
                     </div>
 
@@ -120,9 +164,9 @@
                     <div class="col-sm-2">
                         <asp:TextBox ID="inputTime" runat="server" CssClass="form-control inputTime" type="number" value="0" min="0" max="400" step="5"></asp:TextBox>
                         <label style="margin-bottom: 0;">(minutes)</label>
-                        <asp:rangevalidator ID="RangevalidatorForTime" errormessage="Please enter value between 0-400." forecolor="Red" controltovalidate="inputTime"
-                            minimumvalue="0" maximumvalue="400" runat="server" Type="Integer" Display="Dynamic">
-                        </asp:rangevalidator>
+                        <asp:RangeValidator ID="RangevalidatorForTime" ErrorMessage="Please enter value between 0-400." ForeColor="Red" ControlToValidate="inputTime"
+                            MinimumValue="0" MaximumValue="400" runat="server" Type="Integer" Display="Dynamic">
+                        </asp:RangeValidator>
                     </div>
                 </div>
 
@@ -144,17 +188,67 @@
             </div>
 
         </div>
+
+        <!-- ----------------------------------- Recipes content ----------------------------------- -->
+        <div data-ng-repeat="recipe in recipesData">
+
+            <div id="divRowRecipe" class="media border-bottom p-3" data-toggle="modal" data-target="#myModal{{$index}}">
+                <img data-ng-src="{{recipe.RecipeImagePath}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;">
+                <div class="media-body">
+                    <h4 data-ng-bind="recipe.RecipeName"></h4>
+                    <p class="pLarger" data-ng-bind="recipe.RecipeDescription"></p>
+                    <div class="row" style="margin-left: 1rem;">
+                        <div>
+                            <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+
+                        </div>
+                        <div style="margin-left: 0.4rem; margin-top: 0.1rem">
+                            <span class="pLarger" data-ng-bind="recipe.RecipeTime"></span>
+                            <span class="pLarger">mins</span>
+                        </div>
+
+                        <div style="margin-left: 2rem;">
+                            <i class="fa fa-line-chart" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                            <%--<i class="fa fa-hand-rock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                            <%--<i class="fa fa-tags" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                        </div>
+                        <div style="margin-left: 0.4rem; margin-top: 0.1rem">
+                            <span class="pLarger" data-ng-bind="recipe.RecipeDifficulty"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- The Modal -->
+            <div class="modal" id="myModal{{$index}}">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h1 class="modal-title" data-ng-bind="recipe.RecipeName"></h1>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <h3>Some text to enable scrolling..</h3>
+                            <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, consectetur adipiscing elit/</p>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
-
-
-
-    <script>
-        // Material Select Initialization
-        $(document).ready(function () {
-            $('select').selectpicker();
-        });
-    </script>
 
 </asp:Content>

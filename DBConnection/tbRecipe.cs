@@ -12,19 +12,21 @@ namespace TastyRecipes.DBConnection
     using System;
     using System.Collections.Generic;
     
-    public partial class tbUser
+    public partial class tbRecipe
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbUser()
-        {
-            this.tbRecipes = new HashSet<tbRecipe>();
-        }
-    
+        public int id { get; set; }
+        public string RecipeName { get; set; }
+        public string RecipeDescription { get; set; }
+        public string RecipeMealType { get; set; }
+        public string RecipeCategory { get; set; }
+        public string RecipeIngredients { get; set; }
+        public int RecipeTime { get; set; }
+        public string RecipeDifficulty { get; set; }
+        public string RecipeInstructions { get; set; }
+        public string RecipeImagePath { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
-        public string UserPassword { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbRecipe> tbRecipes { get; set; }
+        public virtual tbUser tbUser { get; set; }
     }
 }

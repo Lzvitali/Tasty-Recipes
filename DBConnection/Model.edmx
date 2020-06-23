@@ -5,6 +5,23 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TastyRecipesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbRecipe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RecipeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecipeDescription" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="RecipeMealType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecipeCategory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecipeIngredients" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RecipeTime" Type="int" Nullable="false" />
+          <Property Name="RecipeDifficulty" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecipeInstructions" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RecipeImagePath" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbUser">
           <Key>
             <PropertyRef Name="UserEmail" />
@@ -13,8 +30,25 @@
           <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK__tbRecipe__UserEm__267ABA7A">
+          <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
+          <End Role="tbRecipe" Type="Self.tbRecipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUser">
+              <PropertyRef Name="UserEmail" />
+            </Principal>
+            <Dependent Role="tbRecipe">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="TastyRecipesModelStoreContainer">
+          <EntitySet Name="tbRecipe" EntityType="Self.tbRecipe" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUser" EntityType="Self.tbUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tbRecipe__UserEm__267ABA7A" Association="Self.FK__tbRecipe__UserEm__267ABA7A">
+            <End Role="tbUser" EntitySet="tbUser" />
+            <End Role="tbRecipe" EntitySet="tbRecipe" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -22,6 +56,11 @@
       <Schema Namespace="TastyRecipesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TastyRecipesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbUsers" EntityType="TastyRecipesModel.tbUser" />
+          <EntitySet Name="tbRecipes" EntityType="TastyRecipesModel.tbRecipe" />
+          <AssociationSet Name="FK__tbRecipe__UserEm__267ABA7A" Association="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A">
+            <End Role="tbUser" EntitySet="tbUsers" />
+            <End Role="tbRecipe" EntitySet="tbRecipes" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="tbUser">
           <Key>
@@ -30,7 +69,38 @@
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbRecipes" Relationship="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A" FromRole="tbUser" ToRole="tbRecipe" />
         </EntityType>
+        <EntityType Name="tbRecipe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RecipeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeDescription" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeMealType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeCategory" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeIngredients" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeTime" Type="Int32" Nullable="false" />
+          <Property Name="RecipeDifficulty" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeInstructions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RecipeImagePath" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbUser" Relationship="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A" FromRole="tbRecipe" ToRole="tbUser" />
+        </EntityType>
+        <Association Name="FK__tbRecipe__UserEm__267ABA7A">
+          <End Type="TastyRecipesModel.tbUser" Role="tbUser" Multiplicity="1" />
+          <End Type="TastyRecipesModel.tbRecipe" Role="tbRecipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUser">
+              <PropertyRef Name="UserEmail" />
+            </Principal>
+            <Dependent Role="tbRecipe">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -43,6 +113,24 @@
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbRecipes">
+            <EntityTypeMapping TypeName="TastyRecipesModel.tbRecipe">
+              <MappingFragment StoreEntitySet="tbRecipe">
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="RecipeImagePath" ColumnName="RecipeImagePath" />
+                <ScalarProperty Name="RecipeInstructions" ColumnName="RecipeInstructions" />
+                <ScalarProperty Name="RecipeDifficulty" ColumnName="RecipeDifficulty" />
+                <ScalarProperty Name="RecipeTime" ColumnName="RecipeTime" />
+                <ScalarProperty Name="RecipeIngredients" ColumnName="RecipeIngredients" />
+                <ScalarProperty Name="RecipeCategory" ColumnName="RecipeCategory" />
+                <ScalarProperty Name="RecipeMealType" ColumnName="RecipeMealType" />
+                <ScalarProperty Name="RecipeDescription" ColumnName="RecipeDescription" />
+                <ScalarProperty Name="RecipeName" ColumnName="RecipeName" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
