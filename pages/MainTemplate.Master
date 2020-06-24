@@ -35,6 +35,10 @@
         .pLarger{
             font-size: 1rem;
         }
+
+        .displayInlineBlock{
+            display: inline-block;
+        }
     </style>
 
     <asp:ContentPlaceHolder ID="head" runat="server">

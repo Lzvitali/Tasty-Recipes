@@ -186,8 +186,9 @@
                 </div>
 
             </div>
-
         </div>
+
+        
 
         <!-- ----------------------------------- Recipes content ----------------------------------- -->
         <div data-ng-repeat="recipe in recipesData">
@@ -220,21 +221,75 @@
 
             </div>
 
-            <!-- The Modal -->
+            <!-- ------------------------------------ The Modal for viewing only ------------------------------------ -->
             <div class="modal" id="myModal{{$index}}">
-                <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-dialog modal-dialog-scrollable" style="max-width: 700px; margin: 4.5rem auto; max-height: calc(88%);">
                     <div class="modal-content">
 
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h1 class="modal-title" data-ng-bind="recipe.RecipeName"></h1>
-                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h1 class="modal-title" style="margin: auto" data-ng-bind="recipe.RecipeName"></h1>
+                            <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem">×</button>
                         </div>
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <h3>Some text to enable scrolling..</h3>
-                            <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, consectetur adipiscing elit/</p>
+
+                            <div class="row" style="margin-bottom: 10px">
+                                <div class="col-md-5">
+                                    <img data-ng-src="{{recipe.RecipeImagePath}}" alt="{{recipe.RecipeName}}" style="width: 270px;">
+                                </div>
+                                <div class="col-md-7">
+                                    <h5 data-ng-bind="recipe.RecipeDescription"></h5>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: center;">
+                                    <div class="displayInlineBlock">
+                                        <h5 class="displayInlineBlock">Meal type: </h5>
+                                        <span class="pLarger" data-ng-bind="recipe.RecipeMealType"></span>
+                                    </div>
+
+                                    <div class="displayInlineBlock" style="margin-left: 2rem;">
+                                        <h5 class="displayInlineBlock">Category: </h5>
+                                        <span class="pLarger" data-ng-bind="recipe.RecipeCategory"></span>
+                                    </div>
+
+                                    <div class="displayInlineBlock" style="margin-left: 2rem;">
+                                        <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                                    </div>
+                                    <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem;">
+                                        <span class="pLarger" data-ng-bind="recipe.RecipeTime"></span>
+                                        <span class="pLarger">mins</span>
+                                    </div>
+
+                                    <div class="displayInlineBlock" style="margin-left: 2rem;">
+                                        <i class="fa fa-line-chart" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                                        <%--<i class="fa fa-hand-rock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                                        <%--<i class="fa fa-tags" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                                    </div>
+                                    <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem;">
+                                        <span class="pLarger" data-ng-bind="recipe.RecipeDifficulty"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 1rem">
+                                <h5 class="font-weight-bold">Ingredients: </h5>
+                                <span class="pLarger" data-ng-bind="recipe.RecipeIngredients"></span>
+                            </div>
+
+                            <div style="margin-top: 1rem">
+                                <h5 class="font-weight-bold">Instructions: </h5>
+                                <span class="pLarger" data-ng-bind="recipe.RecipeInstructions"></span>
+                            </div>
+
+                            <div class="displayInlineBlock" style="margin-top: 1rem">
+                                <h5 class="displayInlineBlock">Posted by: </h5>
+                                <span class="pLarger" data-ng-bind="recipe.UserName"></span>
+                            </div>
+
                         </div>
 
                         <!-- Modal footer -->
