@@ -39,6 +39,10 @@
         .displayInlineBlock{
             display: inline-block;
         }
+
+        .listBoxWidth{
+            width: 150px;
+        }
     </style>
 
     <asp:ContentPlaceHolder ID="head" runat="server">

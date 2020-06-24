@@ -21,6 +21,8 @@
         var app = angular.module('app', [])
             .controller('recipesCtrl', function ($scope, $http) {
 
+                $scope.currentUser = "<%=Session["UserEmail"]%>";
+
                 angular.element(document).ready(function () {
                     $scope.getRecipes();
                 });
@@ -46,6 +48,30 @@
                     } else { // xml format
                         return JSON.parse(xmlDoc.documentElement.textContent);
                     }
+                }
+
+
+                $scope.initNewRecipe = function() {
+                    $scope.newRecipe = {
+                        id: 0,
+                        RecipeName: "",
+                        RecipeDescription: "",
+                        RecipeMealType: "",
+                        RecipeCategory: "",
+                        RecipeIngredients: "",
+                        RecipeTime: "",
+                        RecipeDifficulty: "",
+                        RecipeInstructions: "",
+                        RecipeImagePath: "",
+                        UserName: "<%=Session["UserName"]%>",
+                        UserEmail: "<%=Session["UserEmail"]%>"
+                    }
+                }
+
+
+
+                $scope.save = function () {
+                    var newRecipe = angular.copy($scope.newRecipe);
                 }
 
             });
@@ -136,7 +162,7 @@
                             <asp:ListItem Value="option13">Vegetarian</asp:ListItem>
                             <asp:ListItem Value="option14">Baking</asp:ListItem>
                             <asp:ListItem Value="option15">Desserts</asp:ListItem>
-                            <asp:ListItem Value="option15">Others</asp:ListItem>
+                            <asp:ListItem Value="option16">Others</asp:ListItem>
                         </asp:ListBox>
                     </div>
 
@@ -188,7 +214,133 @@
             </div>
         </div>
 
-        
+        <!-- ----------------------------------- Add button -----------------------------------data-ng-show="currentUser != ''" -->
+        <div class="row" style="float: right; padding-right: 15px;" data-ng-show="true">
+            <div>
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalAdd" data-ng-click="initNewRecipe()">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add
+                </button>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
+        <!-- ---------------------- The Modal for adding new recipe ----------------------------- -->
+        <div class="modal" id="modalAdd">
+            <div class="modal-dialog modal-dialog-scrollable" style="max-width: 700px; margin: 4.5rem auto; max-height: calc(88%);">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <div class="form-group" style="margin: auto;">
+                            <label class="col-form-label col-form-label-lg displayInlineBlock" for="inputLarge">Recipe name: </label>
+                            <input class="form-control form-control-lg displayInlineBlock" type="text" placeholder="Enter recipe name"
+                                id="inputRecipeName" style="margin-left: 5px; width: 300px" data-ng-model="newRecipe.RecipeName" required/>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem">×</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+
+                        <div class="row" style="margin-bottom: 10px">
+                            <div class="col-md-5">
+                                <img src="../RecipesImages/defaultImage.png" alt="image" style="width: 270px;" />
+
+                            </div>
+                            <div class="form-group col-md-7">
+                                <label class="col-form-label col-form-label-lg displayInlineBlock" for="inputLarge">Description: </label>
+                                <textarea class="form-control" id="textareaDescription" rows="10" placeholder="Enter description" data-ng-model="newRecipe.RecipeDescription" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 10px">
+                            <div class="col-sm-12">
+                                <div class="displayInlineBlock" style="margin-right: 15px">
+                                    <div class="form-group" style="width: 150px;">
+                                        <h5 class="displayInlineBlock">Meal type: </h5>
+                                        <select class="form-control" id="selectMealType"  data-ng-model="newRecipe.RecipeMealType" required>
+                                            <option value="">Please select</option>
+                                            <option>Breakfast</option>
+                                            <option>Dinners</option>
+                                            <option>Lunch</option>
+                                            <option>Desserts</option>
+                                            <option>Suitable for all</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="displayInlineBlock">
+                                    <div class="form-group" style="width: 150px;">
+                                        <h5 class="displayInlineBlock">Category: </h5>
+                                        <select class="form-control" id="selectCategory" data-ng-model="newRecipe.RecipeCategory" required>
+                                            <option value="">Please select</option>
+                                            <option>Snacks</option>
+                                            <option>Appetisers</option>
+                                            <option>Soups</option>
+                                            <option>Salads</option>
+                                            <option>Sides</option>
+                                            <option>Pizza</option>
+                                            <option>Pies</option>
+                                            <option>Burgers</option>
+                                            <option>Pasta</option>
+                                            <option>Chicken</option>
+                                            <option>Seafood</option>
+                                            <option>Meat</option>
+                                            <option>Vegetarian</option>
+                                            <option>Baking</option>
+                                            <option>Desserts</option>
+                                            <option>Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="displayInlineBlock" style="margin-left: 2rem;">
+                                    <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                                </div>
+                                <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem;">
+                                    <input class="form-control inputTime" type="number" min="0" max="400" step="5" id="inputRecipeTime" data-ng-model="newRecipe.RecipeTime" required/>
+                                    <label style="margin-bottom: 0;">(minutes)</label>
+                                </div>
+
+                                <div class="displayInlineBlock">
+                                    <div class="form-group" style="width: 150px;">
+                                        <h5 class="displayInlineBlock">Difficulty: </h5>
+                                        <select class="form-control" id="listBoxDifficultyInput" data-ng-model="newRecipe.RecipeDifficulty" required>
+                                            <option value="">Please select</option>
+                                            <option>Easy</option>
+                                            <option>Medium</option>
+                                            <option>Hard</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1rem">
+                            <h5 class="font-weight-bold">Ingredients: </h5>
+                            <textarea class="form-control" id="textareaIngredients" rows="5" placeholder="Enter recipe ingredients" data-ng-model="newRecipe.RecipeIngredients" required></textarea>
+                        </div>
+
+                        <div style="margin-top: 1rem">
+                            <h5 class="font-weight-bold">Instructions: </h5>
+                            <textarea class="form-control" id="textareaInstructions" rows="10"  placeholder="Enter recipe instructions" data-ng-model="newRecipe.RecipeInstructions" required></textarea>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Canel</button>
+                        <button type="submit" class="btn btn-success" data-ng-click="save()">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
         <!-- ----------------------------------- Recipes content ----------------------------------- -->
         <div data-ng-repeat="recipe in recipesData">

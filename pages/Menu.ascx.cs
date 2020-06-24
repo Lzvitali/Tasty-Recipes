@@ -36,6 +36,7 @@ namespace TastyRecipes.pages
                 btnHome.Attributes.Add("class", "nav-item active");
                 Page.Title = "Home";
 
+                Session["UserEmail"] = null;
             }
 
             // change the 'login' btn to 'logout' (if it after login)
