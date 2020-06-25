@@ -18,7 +18,6 @@
           <Property Name="RecipeTime" Type="int" Nullable="false" />
           <Property Name="RecipeDifficulty" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RecipeInstructions" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="RecipeImagePath" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="RecipeImg" Type="varbinary(max)" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -85,7 +84,6 @@
           <Property Name="RecipeTime" Type="Int32" Nullable="false" />
           <Property Name="RecipeDifficulty" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RecipeInstructions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RecipeImagePath" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbUser" Relationship="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A" FromRole="tbRecipe" ToRole="tbUser" />
@@ -124,7 +122,6 @@
                 <ScalarProperty Name="RecipeImg" ColumnName="RecipeImg" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="RecipeImagePath" ColumnName="RecipeImagePath" />
                 <ScalarProperty Name="RecipeInstructions" ColumnName="RecipeInstructions" />
                 <ScalarProperty Name="RecipeDifficulty" ColumnName="RecipeDifficulty" />
                 <ScalarProperty Name="RecipeTime" ColumnName="RecipeTime" />

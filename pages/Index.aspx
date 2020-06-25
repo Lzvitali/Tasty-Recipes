@@ -17,12 +17,15 @@
             $('select').selectpicker();
         });
 
+        
 
         var app = angular.module('app', []);
 
+        // this script will not upload anything. 
+        // It will only populate your model with the contents of your file encoded ad a data - uri(base64).
+        // reference credit: https://stackoverflow.com/questions/17063000/ng-model-for-input-type-file-with-directive-demo
         app.directive('appFilereader', function ($q) {
             var slice = Array.prototype.slice;
-
             return {
                 restrict: 'A',
                 require: '?ngModel',
@@ -61,6 +64,7 @@
             }; //return
         });
 
+
         app.controller('recipesCtrl', function ($scope, $http) {
 
             $scope.currentUser = "<%=Session["UserEmail"]%>";
@@ -69,10 +73,13 @@
                 $scope.getRecipes();
             });
 
+            //var config = { responseType: 'blob' };
+
             $scope.getRecipes = function () {
                 $http.get("../DBConnection/webservice.asmx/GetRecipes", null)
                     .then(function (d) {
                         // success
+                        console.log(d);
                         $scope.recipesData = $scope.getResponceXML(d)
                         console.log($scope.recipesData);
                     }, function (er) {
@@ -93,22 +100,28 @@
             }
 
 
-            $scope.initNewRecipe = function () {
-                $scope.newRecipe = {
-                    id: 0,
-                    RecipeName: "",
-                    RecipeDescription: "",
-                    RecipeMealType: "",
-                    RecipeCategory: "",
-                    RecipeIngredients: "",
-                    RecipeTime: "",
-                    RecipeDifficulty: "",
-                    RecipeInstructions: "",
-                    RecipeImagePath: "",
-                    RecipeImg: "",
-                    UserName: "<%=Session["UserName"]%>",
-                    UserEmail: "<%=Session["UserEmail"]%>"
+            $scope.initNewRecipe = function (recipe) {
+                if (arguments.length == 0) {
+                    $scope.newRecipe = {
+                        id: 0,
+                        RecipeName: "",
+                        RecipeDescription: "",
+                        RecipeMealType: "",
+                        RecipeCategory: "",
+                        RecipeIngredients: "",
+                        RecipeTime: "",
+                        RecipeDifficulty: "",
+                        RecipeInstructions: "",
+                        RecipeImg: "",
+                        UserName: "<%=Session["UserName"]%>",
+                        UserEmail: "<%=Session["UserEmail"]%>"
+                    }
                 }
+                else {
+                    $scope.newRecipe = angular.copy(recipe);
+                }
+
+                $("#modalAdd").modal("show");
             }
 
 
@@ -260,7 +273,7 @@
         <!-- ----------------------------------- Add button ----------------------------------- -->
         <div class="row" style="float: right; padding-right: 15px;" data-ng-show="currentUser != ''">
             <div>
-                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalAdd" data-ng-click="initNewRecipe()">
+                <button type="button" class="btn btn-outline-primary" data-ng-click="initNewRecipe()">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                     Add
                 </button>
@@ -288,12 +301,28 @@
 
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-md-5">
-                                <img data-ng-src="{{newRecipe.RecipeImg}}" alt="image" style="width: 270px; min-height: 222px" />
-
-                                <div class="form-group" style="margin-top: 10px">
+                                <img data-ng-src="data:image/JPEG;image/png;base64,{{newRecipe.RecipeImg}}" data-ng-show="0 != newRecipe.id" alt="image" style="width: 270px; min-height: 222px" />
+                                <img data-ng-src="{{newRecipe.RecipeImg}}" data-ng-show="0 == newRecipe.id" alt="image" style="width: 270px; min-height: 222px" />
+                                
+                                <!--for edit option-->
+                                <div class="form-group" style="margin-top: 10px" data-ng-show="0 != newRecipe.id">
                                     <div class="input-group mb-3">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="inputRecipeImage" accept="image/jpeg,image/png"
+                                                data-ng-model="newRecipe.RecipeImg" data-app-filereader>
+                                            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                                        </div>
+                                        <%--<div class="input-group-append">
+                                            <span class="input-group-text" id="">Upload</span>
+                                        </div>--%>
+                                    </div>
+                                </div>
+
+                                <!--for new recipe option-->
+                                <div class="form-group" style="margin-top: 10px" data-ng-show="0 == newRecipe.id">
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputRecipeImage2" accept="image/jpeg,image/png"
                                                 data-ng-model="newRecipe.RecipeImg" required data-app-filereader>
                                             <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
                                         </div>
@@ -406,23 +435,31 @@
                 <div class="media-body">
                     <h4 data-ng-bind="recipe.RecipeName"></h4>
                     <p class="pLarger" data-ng-bind="recipe.RecipeDescription"></p>
+
                     <div class="row" style="margin-left: 1rem;">
-                        <div>
-                            <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                        <div class="col-sm-10">
+                            <div class="displayInlineBlock">
+                                <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                            </div>
+                            <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem">
+                                <span class="pLarger" data-ng-bind="recipe.RecipeTime"></span>
+                                <span class="pLarger">mins</span>
+                            </div>
 
-                        </div>
-                        <div style="margin-left: 0.4rem; margin-top: 0.1rem">
-                            <span class="pLarger" data-ng-bind="recipe.RecipeTime"></span>
-                            <span class="pLarger">mins</span>
+                            <div class="displayInlineBlock" style="margin-left: 2rem;">
+                                <i class="fa fa-line-chart" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
+                                <%--<i class="fa fa-hand-rock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                                <%--<i class="fa fa-tags" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
+                            </div>
+                            <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem">
+                                <span class="pLarger" data-ng-bind="recipe.RecipeDifficulty"></span>
+                            </div>
                         </div>
 
-                        <div style="margin-left: 2rem;">
-                            <i class="fa fa-line-chart" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
-                            <%--<i class="fa fa-hand-rock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
-                            <%--<i class="fa fa-tags" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>--%>
-                        </div>
-                        <div style="margin-left: 0.4rem; margin-top: 0.1rem">
-                            <span class="pLarger" data-ng-bind="recipe.RecipeDifficulty"></span>
+                        <div class="col-sm-2" style="text-align:right" data-ng-show="currentUser == recipe.UserEmail">
+                            <button type="button" class="btn btn-sm btn-outline-warning" data-ng-click="initNewRecipe(recipe); $event.stopPropagation()" 
+                                style="margin-right: 0.5rem ; font-weight: bold;">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" style="font-weight: bold;" data-ng-click="$event.stopPropagation()">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -445,7 +482,7 @@
 
                             <div class="row" style="margin-bottom: 10px">
                                 <div class="col-md-5">
-                                    <img data-ng-src="{{recipe.RecipeImagePath}}" alt="{{recipe.RecipeName}}" style="width: 270px;">
+                                    <img ng-src="data:image/JPEG;image/png;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" style="width: 270px;">
                                 </div>
                                 <div class="col-md-7">
                                     <h5 data-ng-bind="recipe.RecipeDescription"></h5>

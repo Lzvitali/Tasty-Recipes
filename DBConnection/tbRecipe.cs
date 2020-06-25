@@ -23,7 +23,6 @@ namespace TastyRecipes.DBConnection
         public int RecipeTime { get; set; }
         public string RecipeDifficulty { get; set; }
         public string RecipeInstructions { get; set; }
-        public string RecipeImagePath { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
         public byte[] RecipeImg { get; set; }
