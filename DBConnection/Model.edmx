@@ -19,6 +19,7 @@
           <Property Name="RecipeDifficulty" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="RecipeInstructions" Type="nvarchar(max)" Nullable="false" />
           <Property Name="RecipeImagePath" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RecipeImg" Type="varbinary(max)" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserEmail" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -88,6 +89,7 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbUser" Relationship="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A" FromRole="tbRecipe" ToRole="tbUser" />
+          <Property Name="RecipeImg" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK__tbRecipe__UserEm__267ABA7A">
           <End Type="TastyRecipesModel.tbUser" Role="tbUser" Multiplicity="1" />
@@ -119,6 +121,7 @@
           <EntitySetMapping Name="tbRecipes">
             <EntityTypeMapping TypeName="TastyRecipesModel.tbRecipe">
               <MappingFragment StoreEntitySet="tbRecipe">
+                <ScalarProperty Name="RecipeImg" ColumnName="RecipeImg" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="RecipeImagePath" ColumnName="RecipeImagePath" />

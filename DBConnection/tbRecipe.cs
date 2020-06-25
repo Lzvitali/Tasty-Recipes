@@ -26,6 +26,7 @@ namespace TastyRecipes.DBConnection
         public string RecipeImagePath { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
+        public byte[] RecipeImg { get; set; }
     
         public virtual tbUser tbUser { get; set; }
     }

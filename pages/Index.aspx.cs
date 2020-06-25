@@ -11,6 +11,7 @@ namespace TastyRecipes.pages
 {
     public partial class Index : System.Web.UI.Page
     {
+        static int cnt = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["currentPage"] != null)
@@ -51,6 +52,11 @@ namespace TastyRecipes.pages
         }
 
         protected void myPosts_click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void add(object sender, EventArgs e)
         {
 
         }

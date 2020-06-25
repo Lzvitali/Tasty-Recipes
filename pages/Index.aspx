@@ -18,63 +18,106 @@
         });
 
 
-        var app = angular.module('app', [])
-            .controller('recipesCtrl', function ($scope, $http) {
+        var app = angular.module('app', []);
 
-                $scope.currentUser = "<%=Session["UserEmail"]%>";
+        app.directive('appFilereader', function ($q) {
+            var slice = Array.prototype.slice;
 
-                angular.element(document).ready(function () {
-                    $scope.getRecipes();
-                });
+            return {
+                restrict: 'A',
+                require: '?ngModel',
+                link: function (scope, element, attrs, ngModel) {
+                    if (!ngModel) return;
 
-                $scope.getRecipes = function () {
-                    $http.get("../DBConnection/webservice.asmx/GetRecipes", null)
-                        .then(function (d) {
-                            // success
-                            $scope.recipesData = $scope.getResponceXML(d)
-                            console.log($scope.recipesData);
-                        }, function (er) {
-                            // error
-                            console.log(er);
-                        });
-                }
+                    ngModel.$render = function () { };
 
+                    element.bind('change', function (e) {
+                        var element = e.target;
 
-                // data from service xml -> json
-                $scope.getResponceXML = function (d) {
-                    var xmlDoc = $.parseXML(d.data);
-                    if (xmlDoc == null) { // json format
-                        return JSON.parse(d.data.d);
-                    } else { // xml format
-                        return JSON.parse(xmlDoc.documentElement.textContent);
-                    }
-                }
+                        $q.all(slice.call(element.files, 0).map(readFile))
+                            .then(function (values) {
+                                if (element.multiple) ngModel.$setViewValue(values);
+                                else ngModel.$setViewValue(values.length ? values[0] : null);
+                            });
 
+                        function readFile(file) {
+                            var deferred = $q.defer();
 
-                $scope.initNewRecipe = function() {
-                    $scope.newRecipe = {
-                        id: 0,
-                        RecipeName: "",
-                        RecipeDescription: "",
-                        RecipeMealType: "",
-                        RecipeCategory: "",
-                        RecipeIngredients: "",
-                        RecipeTime: "",
-                        RecipeDifficulty: "",
-                        RecipeInstructions: "",
-                        RecipeImagePath: "",
-                        UserName: "<%=Session["UserName"]%>",
-                        UserEmail: "<%=Session["UserEmail"]%>"
-                    }
-                }
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                deferred.resolve(e.target.result);
+                            };
+                            reader.onerror = function (e) {
+                                deferred.reject(e);
+                            };
+                            reader.readAsDataURL(file);
 
+                            return deferred.promise;
+                        }
 
+                    }); //change
 
-                $scope.save = function () {
-                    var newRecipe = angular.copy($scope.newRecipe);
-                }
+                } //link
+            }; //return
+        });
 
+        app.controller('recipesCtrl', function ($scope, $http) {
+
+            $scope.currentUser = "<%=Session["UserEmail"]%>";
+
+            angular.element(document).ready(function () {
+                $scope.getRecipes();
             });
+
+            $scope.getRecipes = function () {
+                $http.get("../DBConnection/webservice.asmx/GetRecipes", null)
+                    .then(function (d) {
+                        // success
+                        $scope.recipesData = $scope.getResponceXML(d)
+                        console.log($scope.recipesData);
+                    }, function (er) {
+                        // error
+                        console.log(er);
+                    });
+            }
+
+
+            // data from service xml -> json
+            $scope.getResponceXML = function (d) {
+                var xmlDoc = $.parseXML(d.data);
+                if (xmlDoc == null) { // json format
+                    return JSON.parse(d.data.d);
+                } else { // xml format
+                    return JSON.parse(xmlDoc.documentElement.textContent);
+                }
+            }
+
+
+            $scope.initNewRecipe = function () {
+                $scope.newRecipe = {
+                    id: 0,
+                    RecipeName: "",
+                    RecipeDescription: "",
+                    RecipeMealType: "",
+                    RecipeCategory: "",
+                    RecipeIngredients: "",
+                    RecipeTime: "",
+                    RecipeDifficulty: "",
+                    RecipeInstructions: "",
+                    RecipeImagePath: "",
+                    RecipeImg: "",
+                    UserName: "<%=Session["UserName"]%>",
+                    UserEmail: "<%=Session["UserEmail"]%>"
+                }
+            }
+
+
+
+            $scope.save = function () {
+                var newRecipe = angular.copy($scope.newRecipe);
+            }
+
+        });
 
     </script>
 </asp:Content>
@@ -214,8 +257,8 @@
             </div>
         </div>
 
-        <!-- ----------------------------------- Add button -----------------------------------data-ng-show="currentUser != ''" -->
-        <div class="row" style="float: right; padding-right: 15px;" data-ng-show="true">
+        <!-- ----------------------------------- Add button ----------------------------------- -->
+        <div class="row" style="float: right; padding-right: 15px;" data-ng-show="currentUser != ''">
             <div>
                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalAdd" data-ng-click="initNewRecipe()">
                     <i class="fa fa-plus" aria-hidden="true"></i>
@@ -235,7 +278,7 @@
                         <div class="form-group" style="margin: auto;">
                             <label class="col-form-label col-form-label-lg displayInlineBlock" for="inputLarge">Recipe name: </label>
                             <input class="form-control form-control-lg displayInlineBlock" type="text" placeholder="Enter recipe name"
-                                id="inputRecipeName" style="margin-left: 5px; width: 300px" data-ng-model="newRecipe.RecipeName" required/>
+                                id="inputRecipeName" style="margin-left: 5px; width: 300px" data-ng-model="newRecipe.RecipeName" required />
                         </div>
                         <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem">×</button>
                     </div>
@@ -245,7 +288,20 @@
 
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-md-5">
-                                <img src="../RecipesImages/defaultImage.png" alt="image" style="width: 270px;" />
+                                <img data-ng-src="{{newRecipe.RecipeImg}}" alt="image" style="width: 270px; min-height: 222px" />
+
+                                <div class="form-group" style="margin-top: 10px">
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputRecipeImage" accept="image/jpeg,image/png"
+                                                data-ng-model="newRecipe.RecipeImg" required data-app-filereader>
+                                            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                                        </div>
+                                        <%--<div class="input-group-append">
+                                            <span class="input-group-text" id="">Upload</span>
+                                        </div>--%>
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="form-group col-md-7">
@@ -256,10 +312,10 @@
 
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-sm-12">
-                                <div class="displayInlineBlock" style="margin-right: 15px">
+                                <div class="displayInlineBlock" style="margin-right: 1rem">
                                     <div class="form-group" style="width: 150px;">
                                         <h5 class="displayInlineBlock">Meal type: </h5>
-                                        <select class="form-control" id="selectMealType"  data-ng-model="newRecipe.RecipeMealType" required>
+                                        <select class="form-control" id="selectMealType" data-ng-model="newRecipe.RecipeMealType" required>
                                             <option value="">Please select</option>
                                             <option>Breakfast</option>
                                             <option>Dinners</option>
@@ -271,7 +327,7 @@
                                 </div>
 
                                 <div class="displayInlineBlock">
-                                    <div class="form-group" style="width: 150px;">
+                                    <div class="form-group" style="width: 130px;">
                                         <h5 class="displayInlineBlock">Category: </h5>
                                         <select class="form-control" id="selectCategory" data-ng-model="newRecipe.RecipeCategory" required>
                                             <option value="">Please select</option>
@@ -299,12 +355,12 @@
                                     <i class="fa fa-clock-o" aria-hidden="true" style="font-size: 24px; color: darkcyan"></i>
                                 </div>
                                 <div class="displayInlineBlock" style="margin-left: 0.4rem; margin-top: 0.1rem;">
-                                    <input class="form-control inputTime" type="number" min="0" max="400" step="5" id="inputRecipeTime" data-ng-model="newRecipe.RecipeTime" required/>
+                                    <input class="form-control inputTime" type="number" min="0" max="400" step="5" id="inputRecipeTime" data-ng-model="newRecipe.RecipeTime" required />
                                     <label style="margin-bottom: 0;">(minutes)</label>
                                 </div>
 
                                 <div class="displayInlineBlock">
-                                    <div class="form-group" style="width: 150px;">
+                                    <div class="form-group" style="width: 110px; margin-left: 2rem;">
                                         <h5 class="displayInlineBlock">Difficulty: </h5>
                                         <select class="form-control" id="listBoxDifficultyInput" data-ng-model="newRecipe.RecipeDifficulty" required>
                                             <option value="">Please select</option>
@@ -325,7 +381,7 @@
 
                         <div style="margin-top: 1rem">
                             <h5 class="font-weight-bold">Instructions: </h5>
-                            <textarea class="form-control" id="textareaInstructions" rows="10"  placeholder="Enter recipe instructions" data-ng-model="newRecipe.RecipeInstructions" required></textarea>
+                            <textarea class="form-control" id="textareaInstructions" rows="10" placeholder="Enter recipe instructions" data-ng-model="newRecipe.RecipeInstructions" required></textarea>
                         </div>
 
 
@@ -346,7 +402,7 @@
         <div data-ng-repeat="recipe in recipesData">
 
             <div id="divRowRecipe" class="media border-bottom p-3" data-toggle="modal" data-target="#myModal{{$index}}">
-                <img data-ng-src="{{recipe.RecipeImagePath}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;">
+                <img data-ng-src="data:image/JPEG;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;" />
                 <div class="media-body">
                     <h4 data-ng-bind="recipe.RecipeName"></h4>
                     <p class="pLarger" data-ng-bind="recipe.RecipeDescription"></p>
