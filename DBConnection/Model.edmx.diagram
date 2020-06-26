@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4056abf0499f4408886566b908966b25" Name="Diagram1">
-        <EntityTypeShape EntityType="TastyRecipesModel.tbUser" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TastyRecipesModel.tbRecipe" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="TastyRecipesModel.tbRecipe" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="TastyRecipesModel.tbUser" Width="1.5" PointX="0.75" PointY="1.875" />
         <AssociationConnector Association="TastyRecipesModel.FK__tbRecipe__UserEm__267ABA7A" />
       </Diagram>
     </edmx:Diagrams>

@@ -17,7 +17,7 @@
             $('select').selectpicker();
         });
 
-        
+
 
         var app = angular.module('app', []);
 
@@ -73,10 +73,17 @@
                 $scope.getRecipes();
             });
 
+            $scope.addImgPref = function () {
+                $scope.newRecipe.RecipeImg = "data:image/JPEG;image/png;base64," + $scope.newRecipe.RecipeImg;
+            }
 
             $scope.getImgSrc = function () {
                 if ('d' == $scope.newRecipe.RecipeImg[0]) {
-                    if ('J' == $scope.newRecipe.RecipeImg[11] || 'j' == $scope.newRecipe.RecipeImg[11]) {
+                    var subStr = $scope.newRecipe.RecipeImg.substr(0, 33);
+                    if ("data:image/JPEG;image/png;base64," == subStr) {
+                        $scope.newRecipe.RecipeImg = $scope.newRecipe.RecipeImg.substr(33, $scope.newRecipe.RecipeImg.length);
+                    }
+                    else if ('J' == $scope.newRecipe.RecipeImg[11] || 'j' == $scope.newRecipe.RecipeImg[11]) {
                         $scope.newRecipe.RecipeImg = $scope.newRecipe.RecipeImg.substr(23, $scope.newRecipe.RecipeImg.length);
                     }
                     else if ('P' == $scope.newRecipe.RecipeImg[11] || 'p' == $scope.newRecipe.RecipeImg[11]) {
@@ -131,12 +138,31 @@
                 }
                 else {
                     $scope.newRecipe = angular.copy(recipe);
+                    $scope.addImgPref();
+                    $scope.insertDataMealType();
                 }
 
                 $("#modalAdd").modal("show");
             }
 
 
+            $scope.checkValidation = function () {
+                $scope.newRecipe.RecipeMealType = $scope.dataMealType.label;
+                $scope.newRecipe.RecipeCategory = $scope.dataCategory.label;
+                $scope.newRecipe.RecipeDifficulty = $scope.dataDifficulty.label;
+                if ($scope.newRecipe.RecipeName == "" || $scope.newRecipe.RecipeDescription == ""
+                    || $scope.newRecipe.RecipeMealType == "" || $scope.newRecipe.RecipeCategory == ""
+                    || $scope.newRecipe.RecipeIngredients == "" || $scope.newRecipe.RecipeTime == ""
+                    || $scope.newRecipe.RecipeDifficulty == "" || $scope.newRecipe.RecipeInstructions == ""
+                    || $scope.newRecipe.RecipeImg == "") {
+                    return;
+                }
+                else {
+                    $scope.getImgSrc();
+                    $scope.save();
+                }
+
+            }
 
             $scope.save = function () {
                 var recipe = angular.copy($scope.newRecipe);
@@ -166,6 +192,50 @@
             }
 
 
+            $scope.unitsMealType = [
+                { 'id': 'Breakfast'         , 'label': 'Breakfast' },
+                { 'id': 'Dinners'           , 'label': 'Dinners' },
+                { 'id': 'Lunch'             , 'label': 'Lunch' },
+                { 'id': 'Desserts'          , 'label': 'Desserts' },
+                { 'id': 'Suitable for all'  , 'label': 'Suitable for all' },
+            ]
+            
+            $scope.dataMealType = $scope.unitsMealType[4];
+
+            $scope.insertDataMealType = function () {
+                $scope.dataMealType.id = $scope.newRecipe.RecipeMealType;
+                $scope.dataMealType.label = $scope.newRecipe.RecipeMealType;
+            }
+
+            $scope.unitsCategory = [
+                { 'id': 'Snacks', 'label': 'Snacks' },
+                { 'id': 'Appetisers', 'label': 'Appetisers' },
+                { 'id': 'Soups', 'label': 'Soups' },
+                { 'id': 'Salads', 'label': 'Salads' },
+                { 'id': 'Sides', 'label': 'Sides' },
+                { 'id': 'Pizza', 'label': 'Pizza' },
+                { 'id': 'Pies', 'label': 'Pies' },
+                { 'id': 'Burgers', 'label': 'Burgers' },
+                { 'id': 'Pasta', 'label': 'Pasta' },
+                { 'id': 'Chicken', 'label': 'Chicken' },
+                { 'id': 'Seafood', 'label': 'Seafood' },
+                { 'id': 'Meat', 'label': 'Meat' },
+                { 'id': 'Vegetarian', 'label': 'Vegetarian' },
+                { 'id': 'Baking', 'label': 'Baking' },
+                { 'id': 'Desserts', 'label': 'Desserts' },
+                { 'id': 'Others', 'label': 'Others' },
+            ]
+
+            $scope.dataCategory = $scope.unitsCategory[15];
+
+            
+            $scope.unitsDifficulty = [
+                { 'id': 'Easy', 'label': 'Easy' },
+                { 'id': 'Medium', 'label': 'Medium' },
+                { 'id': 'Hard', 'label': 'Hard' },
+            ]
+
+            $scope.dataDifficulty = $scope.unitsDifficulty[0];
         });
 
     </script>
@@ -337,34 +407,18 @@
 
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-md-5">
-                                <img data-ng-src="data:image/JPEG;image/png;base64,{{newRecipe.RecipeImg}}" data-ng-show="0 != newRecipe.id" alt="image" style="width: 270px; min-height: 222px" />
-                                <img data-ng-src="{{newRecipe.RecipeImg}}" data-ng-show="0 == newRecipe.id" alt="image" style="width: 270px; min-height: 222px" />
+
+                                <!--reference for use of ng-src: https://makandracards.com/makandra/29415-resolving-angular-not-updating-an-image-src-when-ng-src-is-empty -->
+                                <img ng-src="{{ newRecipe.RecipeImg || '//:0' }}" alt="image" style="width: 270px; min-height: 222px" />
                                 
-                                <!--for edit option-->
-                                <div class="form-group" style="margin-top: 10px" data-ng-show="0 != newRecipe.id">
+
+                                <div class="form-group" style="margin-top: 10px">
                                     <div class="input-group mb-3">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="inputRecipeImage" accept="image/jpeg,image/png"
-                                                data-ng-model="newRecipe.RecipeImg" data-app-filereader>
+                                                data-ng-model="newRecipe.RecipeImg" data-app-filereader data-ng-required="0 == newRecipe.id">
                                             <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
                                         </div>
-                                        <%--<div class="input-group-append">
-                                            <span class="input-group-text" id="">Upload</span>
-                                        </div>--%>
-                                    </div>
-                                </div>
-
-                                <!--for new recipe option-->
-                                <div class="form-group" style="margin-top: 10px" data-ng-show="0 == newRecipe.id">
-                                    <div class="input-group mb-3">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="inputRecipeImage2" accept="image/jpeg,image/png"
-                                                data-ng-model="newRecipe.RecipeImg" required data-app-filereader>
-                                            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
-                                        </div>
-                                        <%--<div class="input-group-append">
-                                            <span class="input-group-text" id="">Upload</span>
-                                        </div>--%>
                                     </div>
                                 </div>
 
@@ -380,39 +434,14 @@
                                 <div class="displayInlineBlock" style="margin-right: 1rem">
                                     <div class="form-group" style="width: 150px;">
                                         <h5 class="displayInlineBlock">Meal type: </h5>
-                                        <select class="form-control" id="selectMealType" data-ng-model="newRecipe.RecipeMealType" required>
-                                            <option value="">Please select</option>
-                                            <option>Breakfast</option>
-                                            <option>Dinners</option>
-                                            <option>Lunch</option>
-                                            <option>Desserts</option>
-                                            <option>Suitable for all</option>
-                                        </select>
+                                        <select class="form-control" data-ng-model="dataMealType" data-ng-options="opt as opt.label for opt in unitsMealType "> </select>
                                     </div>
                                 </div>
 
                                 <div class="displayInlineBlock">
                                     <div class="form-group" style="width: 130px;">
                                         <h5 class="displayInlineBlock">Category: </h5>
-                                        <select class="form-control" id="selectCategory" data-ng-model="newRecipe.RecipeCategory" required>
-                                            <option value="">Please select</option>
-                                            <option>Snacks</option>
-                                            <option>Appetisers</option>
-                                            <option>Soups</option>
-                                            <option>Salads</option>
-                                            <option>Sides</option>
-                                            <option>Pizza</option>
-                                            <option>Pies</option>
-                                            <option>Burgers</option>
-                                            <option>Pasta</option>
-                                            <option>Chicken</option>
-                                            <option>Seafood</option>
-                                            <option>Meat</option>
-                                            <option>Vegetarian</option>
-                                            <option>Baking</option>
-                                            <option>Desserts</option>
-                                            <option>Others</option>
-                                        </select>
+                                        <select class="form-control" data-ng-model="dataCategory" data-ng-options="opt as opt.label for opt in unitsCategory "> </select>
                                     </div>
                                 </div>
 
@@ -427,12 +456,7 @@
                                 <div class="displayInlineBlock">
                                     <div class="form-group" style="width: 110px; margin-left: 2rem;">
                                         <h5 class="displayInlineBlock">Difficulty: </h5>
-                                        <select class="form-control" id="listBoxDifficultyInput" data-ng-model="newRecipe.RecipeDifficulty" required>
-                                            <option value="">Please select</option>
-                                            <option>Easy</option>
-                                            <option>Medium</option>
-                                            <option>Hard</option>
-                                        </select>
+                                        <select class="form-control" data-ng-model="dataDifficulty" data-ng-options="opt as opt.label for opt in unitsDifficulty "> </select>
                                     </div>
 
                                 </div>
@@ -455,7 +479,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Canel</button>
-                        <button type="submit" class="btn btn-success" data-ng-click="getImgSrc();save()">Save</button>
+                        <button type="submit" class="btn btn-success" data-ng-click="checkValidation()">Save</button>
                     </div>
 
                 </div>
@@ -492,9 +516,10 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-2" style="text-align:right" data-ng-show="currentUser == recipe.UserEmail">
-                            <button type="button" class="btn btn-sm btn-outline-warning" data-ng-click="initNewRecipe(recipe); $event.stopPropagation()" 
-                                style="margin-right: 0.5rem ; font-weight: bold;">Edit</button>
+                        <div class="col-sm-2" style="text-align: right" data-ng-show="currentUser == recipe.UserEmail">
+                            <button type="button" class="btn btn-sm btn-outline-warning" data-ng-click="initNewRecipe(recipe); $event.stopPropagation()"
+                                style="margin-right: 0.5rem; font-weight: bold;">
+                                Edit</button>
                             <button type="button" class="btn btn-sm btn-outline-danger" style="font-weight: bold;" data-ng-click="$event.stopPropagation()">Delete</button>
                         </div>
                     </div>

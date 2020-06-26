@@ -27,15 +27,8 @@ namespace TastyRecipes.DBConnection
             using (var db = new DBConnection.TastyRecipesEntities())
             {
                 var recipes = db.tbRecipes.ToList();
-
-                // used this reference: http://www.siddharthpandey.net/solve-self-referencing-loop-issue-when-using-newtonsoft-json/
-                // there was an error: Newtonsoft.Json.JsonSerializationException: 'Self referencing loop detected with type...
-                return JsonConvert.SerializeObject(recipes, new JsonSerializerSettings()
-                {
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                    Formatting = Formatting.Indented
-                });
-
+           
+                return JsonConvert.SerializeObject(recipes);
             }
         }
 

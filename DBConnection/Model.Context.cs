@@ -18,6 +18,8 @@ namespace TastyRecipes.DBConnection
         public TastyRecipesEntities()
             : base("name=TastyRecipesEntities")
         {
+            // reference: https://stackoverflow.com/questions/19467673/entity-framework-self-referencing-loop-detected
+            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,7 +27,7 @@ namespace TastyRecipes.DBConnection
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tbUser> tbUsers { get; set; }
         public virtual DbSet<tbRecipe> tbRecipes { get; set; }
+        public virtual DbSet<tbUser> tbUsers { get; set; }
     }
 }
