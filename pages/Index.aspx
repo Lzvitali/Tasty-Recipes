@@ -73,6 +73,18 @@
                 $scope.getRecipes();
             });
 
+
+            $scope.getImgSrc = function () {
+                if ('d' == $scope.newRecipe.RecipeImg[0]) {
+                    if ('J' == $scope.newRecipe.RecipeImg[11] || 'j' == $scope.newRecipe.RecipeImg[11]) {
+                        $scope.newRecipe.RecipeImg = $scope.newRecipe.RecipeImg.substr(23, $scope.newRecipe.RecipeImg.length);
+                    }
+                    else if ('P' == $scope.newRecipe.RecipeImg[11] || 'p' == $scope.newRecipe.RecipeImg[11]) {
+                        $scope.newRecipe.RecipeImg = $scope.newRecipe.RecipeImg.substr(22, $scope.newRecipe.RecipeImg.length);
+                    }
+                }
+            }
+
             //var config = { responseType: 'blob' };
 
             $scope.getRecipes = function () {
@@ -127,8 +139,32 @@
 
 
             $scope.save = function () {
-                var newRecipe = angular.copy($scope.newRecipe);
+                var recipe = angular.copy($scope.newRecipe);
+                var isNew = $scope.newRecipe.id == 0;
+                var url = $scope.service + "SaveRecipe";
+                var data = { data: recipe };
+                $http.post("../DBConnection/webservice.asmx/SaveRecipe", data, null).then(
+                    function (d) { // success
+                        if (isNew) {
+                            recipe.id = d.data.d;
+                            $scope.recipesData.push(recipe);
+                        } else {
+                            $scope.recipesData.map((x, i) => {
+                                if (x.id == d.data.d) {
+                                    $scope.recipesData[i] = recipe;
+                                }
+                            });
+                        }
+                        $scope.safeApply();
+                        $("#modalAdd").modal("hide");
+                    },
+                    function (e) { // error
+                        console.log(e);
+                    }
+                )
+
             }
+
 
         });
 
@@ -419,7 +455,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Canel</button>
-                        <button type="submit" class="btn btn-success" data-ng-click="save()">Save</button>
+                        <button type="submit" class="btn btn-success" data-ng-click="getImgSrc();save()">Save</button>
                     </div>
 
                 </div>
@@ -431,7 +467,7 @@
         <div data-ng-repeat="recipe in recipesData">
 
             <div id="divRowRecipe" class="media border-bottom p-3" data-toggle="modal" data-target="#myModal{{$index}}">
-                <img data-ng-src="data:image/JPEG;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;" />
+                <img data-ng-src="data:image/JPEG;image/png;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;" />
                 <div class="media-body">
                     <h4 data-ng-bind="recipe.RecipeName"></h4>
                     <p class="pLarger" data-ng-bind="recipe.RecipeDescription"></p>

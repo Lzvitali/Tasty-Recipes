@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.Services;
 
 namespace TastyRecipes.DBConnection
@@ -34,6 +37,43 @@ namespace TastyRecipes.DBConnection
                 });
 
             }
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public int SaveRecipe()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var request = HttpContext.Current.Request;
+                request.InputStream.Seek(0, SeekOrigin.Begin);
+                request.InputStream.CopyTo(stream);
+                var dataStr = Encoding.UTF8.GetString(stream.ToArray());
+                var data = (dynamic)JsonConvert.DeserializeObject(dataStr);
+                using (var db = new DBConnection.TastyRecipesEntities())
+                {
+                    var d = data.data;
+                    int id = Convert.ToInt32(d["id"]);
+                    var recipe = id == 0 ? new tbRecipe() : db.tbRecipes.Where(i => i.id == id).FirstOrDefault();
+                    recipe.RecipeName = Convert.ToString(d["RecipeName"]);
+                    recipe.RecipeDescription = Convert.ToString(d["RecipeDescription"]);
+                    recipe.RecipeMealType = Convert.ToString(d["RecipeMealType"]);
+                    recipe.RecipeCategory = Convert.ToString(d["RecipeCategory"]);
+                    recipe.RecipeIngredients = Convert.ToString(d["RecipeIngredients"]);
+                    recipe.RecipeTime = Convert.ToInt32(d["RecipeTime"]);
+                    recipe.RecipeDifficulty = Convert.ToString(d["RecipeDifficulty"]);
+                    recipe.RecipeInstructions = Convert.ToString(d["RecipeInstructions"]);
+                    recipe.RecipeImg = (byte[])(d["RecipeImg"]);
+                    recipe.UserName = Convert.ToString(d["UserName"]);
+                    recipe.UserEmail = Convert.ToString(d["UserEmail"]);
+
+                    if (id == 0) db.tbRecipes.Add(recipe);
+                    db.SaveChanges();
+
+                    return recipe.id;
+                }
+            }
+
         }
     }
 }
