@@ -8,6 +8,11 @@
             width: 70px;
             display: inline-block
         }
+
+        .recipeData:hover{
+            background-color:#f2f2f2;
+        }
+
     </style>
 
     <script>
@@ -192,6 +197,20 @@
             }
 
 
+            $scope.deleteRecipe = function (id) {
+                var config = { params: { id: id } };
+                $http.get("../DBConnection/webservice.asmx/DeleteRecipe", config)
+                    .then(
+                        function (d) {// success
+                            $scope.recipesData = $scope.recipesData.filter(u => u.id != id);
+                            $scope.safeApply();
+                        },
+                        function (er) {// error
+                            console.log(er);
+                        });
+            }
+
+
             $scope.unitsMealType = [
                 { 'id': 'Breakfast'         , 'label': 'Breakfast' },
                 { 'id': 'Dinners'           , 'label': 'Dinners' },
@@ -287,7 +306,7 @@
             </div>
 
             <div id="divFilter" class="collapse" style="padding-top: 1rem">
-                <div class="row" style="margin-bottom: 40px; margin-top: 10px">
+                <div class="row" style="margin-bottom: 40px; margin-top: 10px; margin-right: 1rem; margin-left: 1rem;">
                     <div class="col-sm-2">
                         <label class="font-weight-bold" style="font-size: 1rem">Meal type</label>
                     </div>
@@ -490,7 +509,7 @@
         <!-- ----------------------------------- Recipes content ----------------------------------- -->
         <div data-ng-repeat="recipe in recipesData">
 
-            <div id="divRowRecipe" class="media border-bottom p-3" data-toggle="modal" data-target="#myModal{{$index}}">
+            <div id="divRowRecipe" class="media recipeData border-bottom p-3" data-toggle="modal" data-target="#myModal{{$index}}">
                 <img data-ng-src="data:image/JPEG;image/png;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" class="mr-3 mt-3" style="width: 80px;" />
                 <div class="media-body">
                     <h4 data-ng-bind="recipe.RecipeName"></h4>
@@ -520,7 +539,7 @@
                             <button type="button" class="btn btn-sm btn-outline-warning" data-ng-click="initNewRecipe(recipe); $event.stopPropagation()"
                                 style="margin-right: 0.5rem; font-weight: bold;">
                                 Edit</button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" style="font-weight: bold;" data-ng-click="$event.stopPropagation()">Delete</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" style="font-weight: bold;" data-ng-click="deleteRecipe(recipe.id); $event.stopPropagation()">Delete</button>
                         </div>
                     </div>
                 </div>

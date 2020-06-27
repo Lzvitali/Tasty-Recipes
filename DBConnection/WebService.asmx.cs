@@ -68,5 +68,19 @@ namespace TastyRecipes.DBConnection
             }
 
         }
+
+
+        [WebMethod(EnableSession = true)]
+        public int DeleteRecipe(int id)
+        {
+            using (var db = new DBConnection.TastyRecipesEntities())
+            {
+                var recipe = db.tbRecipes.Where(i => i.id == id).FirstOrDefault();
+                db.tbRecipes.Remove(recipe);
+                db.SaveChanges();
+                return recipe.id;
+            }
+        }
+
     }
 }
