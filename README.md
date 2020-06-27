@@ -33,8 +33,7 @@ There is a One-to-many relationship between the Recipe table and the User table.
 </tr></table>
 
 ### _<p align="center"> Home screen - for registerd user </p>_
-<kbd><img src="https://github.com/Lzvitali/Tasty-Recipes/blob/master/screenshots/Home%20screen%20for%20registered%20user.PNG" alt="Home screen - for registerd user"/></kbd>  
-
+<kbd><img src="https://github.com/Lzvitali/Tasty-Recipes/blob/master/screenshots/Home%20screen%20--%20for%20registered%20user.PNG" alt="Home screen - for registerd user"/></kbd>  
 ### _<p align="center"> Edit option - for registerd user </p>_
 <kbd><img src="https://github.com/Lzvitali/Tasty-Recipes/blob/master/screenshots/Edit%20option.PNG" alt="Edit option - for registerd user"/></kbd>  
 
