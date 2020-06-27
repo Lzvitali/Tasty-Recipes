@@ -546,7 +546,7 @@
                                     <img ng-src="data:image/JPEG;image/png;base64,{{recipe.RecipeImg}}" alt="{{recipe.RecipeName}}" style="width: 270px;">
                                 </div>
                                 <div class="col-md-7">
-                                    <h5 data-ng-bind="recipe.RecipeDescription"></h5>
+                                    <h5 style="white-space: pre-line" data-ng-bind="recipe.RecipeDescription"></h5>
                                 </div>
                             </div>
 
@@ -583,12 +583,12 @@
 
                             <div style="margin-top: 1rem">
                                 <h5 class="font-weight-bold">Ingredients: </h5>
-                                <span class="pLarger" data-ng-bind="recipe.RecipeIngredients"></span>
+                                <span class="pLarger" style="white-space: pre-line" data-ng-bind="recipe.RecipeIngredients"></span>
                             </div>
 
                             <div style="margin-top: 1rem">
                                 <h5 class="font-weight-bold">Instructions: </h5>
-                                <span class="pLarger" data-ng-bind="recipe.RecipeInstructions"></span>
+                                <span class="pLarger" style="white-space: pre-line" data-ng-bind="recipe.RecipeInstructions"></span>
                             </div>
 
                             <div class="displayInlineBlock" style="margin-top: 1rem">
